@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "reminders"
+version = "0.1.0"
+description = ""
+authors = ["piotrwolanin <peterjwolanin@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "^4.2.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
