@@ -3,22 +3,43 @@
 {% block content %}
   <div class="row mt-5">
     <div class="col-md-12">
-      <h1>My To-Do List</h1>
-      <a href="{% url 'todo-create' %}" class="btn btn-primary my-3">Add New Task</a>
+
+      <h1>To-Do List</h1>
+
+      <h3>Pending items</h3>
       <ul class="list-group">
-        {% for todo in object_list %}
+        {% for todo in todos %}
+        {% if not todo.completed %}
           <li class="list-group-item">
             {{ todo.description }}
             {% if todo.priority %}
-            <span class="badge badge-danger">!!!</span>
+            <span class="badge badge-warning">PRIORITY</span>
             {% endif %}
-            <a href="{% url 'todo-update' todo.id %}" class="btn btn-secondary btn-sm float-right ml-2">Edit</a>
+            <a href="{% url 'todo-update' todo.id %}" class="btn btn-primary btn-sm float-right ml-2">Edit</a>
             <a href="{% url 'todo-delete' todo.id %}" class="btn btn-danger btn-sm float-right">Delete</a>
           </li>
+        {% endif %}
         {% empty %}
           <li class="list-group-item">No tasks available.</li>
         {% endfor %}
       </ul>
+      
+      <a href="{% url 'todo-create' %}" class="btn btn-success my-3">Add New Task</a>
+
+      <h3>Finished items</h3>
+      <ul class="list-group">
+        {% for todo in todos %}
+        {% if todo.completed %}
+          <li class="list-group-item">
+            <del>{{ todo.description }}</del>
+            <a href="{% url 'todo-delete' todo.id %}" class="btn btn-warning btn-sm float-right">Clear</a>
+          </li>
+        {% endif %}
+        {% empty %}
+          <li class="list-group-item">No finished tasks.</li>
+        {% endfor %}
+      </ul>
+
     </div>
   </div>
 {% endblock %}

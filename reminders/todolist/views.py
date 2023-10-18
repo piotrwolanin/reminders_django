@@ -7,6 +7,7 @@ from .forms import ToDoItemModelForm
 
 class ToDoListView(ListView):
     template_name = "todolist/todo_list.html"
+    context_object_name = "todos"
     model = ToDoItem
 
 
