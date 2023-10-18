@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from .models import ToDoItem
+from .forms import ToDoItemModelForm
 
 
 class ToDoListView(ListView):
@@ -11,22 +12,24 @@ class ToDoListView(ListView):
 
 class ToDoCreateView(CreateView):
     model = ToDoItem
-    fields = ['description']
-    template_name = 'todolist/todo_form.html'
-    context_object_name = 'todo'
-    success_url = reverse_lazy('todo-list')
+    form_class = ToDoItemModelForm
+    template_name = "todolist/todo_form.html"
+    context_object_name = "todo"
+    success_url = reverse_lazy("todo-list")
 
 
 class ToDoUpdateView(UpdateView):
     model = ToDoItem
-    fields = ['description']
-    template_name = 'todolist/todo_form.html'
-    context_object_name = 'todo'
-    success_url = reverse_lazy('todo-list')
+    form_class = ToDoItemModelForm
+    template_name = "todolist/todo_form.html"
+    context_object_name = "todo"
+    success_url = reverse_lazy("todo-list")
+    success_message = "Task was successfully updated."
 
 
 class ToDoDeleteView(DeleteView):
     model = ToDoItem
-    template_name = 'todolist/todo_confirm_delete.html'
-    context_object_name = 'todo'
-    success_url = reverse_lazy('todo-list')
+    template_name = "todolist/todo_confirm_delete.html"
+    context_object_name = "todo"
+    success_url = reverse_lazy("todo-list")
+    success_message = "Task was successfully deleted."
