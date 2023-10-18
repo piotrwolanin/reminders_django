@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <h1>Delete Task</h1>
       <p>Are you sure you want to delete the task "{{ todo.description }}"?</p>
-      <form method="post">
+      <form method="POST">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Yes, Delete</button>
         <a href="{% url 'todo-list' %}" class="btn btn-secondary">Cancel</a>

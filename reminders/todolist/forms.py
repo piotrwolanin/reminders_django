@@ -2,16 +2,11 @@ from . import models
 from django.forms import ModelForm, Textarea
 
 
-class CommonInfo(ModelForm):
+class ToDoItemModelForm(ModelForm):
     class Meta:
-        abstract = True
-        exclude = ["created", "modified", "completed"]
-        widgets = {"description": Textarea(attrs={"rows": 5})}
+        model = models.ToDoItem
+        fields = ["description", "priority"]
+        widgets = {"description": Textarea(attrs={"rows": 2})}
         help_texts = {
             "description": "Maximum 200 characters.",
         }
-
-
-class ToDoItemModelForm(CommonInfo):
-    class Meta(CommonInfo.Meta):
-        model = models.ToDoItem

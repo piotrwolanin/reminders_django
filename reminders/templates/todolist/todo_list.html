@@ -9,6 +9,9 @@
         {% for todo in object_list %}
           <li class="list-group-item">
             {{ todo.description }}
+            {% if todo.priority %}
+            <span class="badge badge-danger">!!!</span>
+            {% endif %}
             <a href="{% url 'todo-update' todo.id %}" class="btn btn-secondary btn-sm float-right ml-2">Edit</a>
             <a href="{% url 'todo-delete' todo.id %}" class="btn btn-danger btn-sm float-right">Delete</a>
           </li>
