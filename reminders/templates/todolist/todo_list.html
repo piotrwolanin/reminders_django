@@ -1,45 +1,61 @@
 {% extends "todolist/blank.html" %}
 
 {% block content %}
-  <div class="row mt-5">
-    <div class="col-md-12">
+<h1>To-Do List</h1>
 
-      <h1>To-Do List</h1>
+<div>
+  <h3>Pending items</h3>
 
-      <h3>Pending items</h3>
-      <ul class="list-group">
-        {% for todo in todos %}
-        {% if not todo.completed %}
-          <li class="list-group-item">
+  <ul class="todo-list">
+    {% for todo in todos %}
+
+      {% if not todo.completed %}
+        <li class=todo-item>
+          <input class="todo-checkbox" type="checkbox" value="">
+          <a href="{% url 'todo-update' todo.id %}" class="">
+            <span class="todo-description">
             {{ todo.description }}
-            {% if todo.priority %}
-            <span class="badge badge-warning">PRIORITY</span>
-            {% endif %}
-            <a href="{% url 'todo-update' todo.id %}" class="btn btn-primary btn-sm float-right ml-2">Edit</a>
-            <a href="{% url 'todo-delete' todo.id %}" class="btn btn-danger btn-sm float-right">Delete</a>
-          </li>
-        {% endif %}
-        {% empty %}
-          <li class="list-group-item">No tasks available.</li>
-        {% endfor %}
-      </ul>
-      
-      <a href="{% url 'todo-create' %}" class="btn btn-success my-3">Add New Task</a>
+            </span>
+          </a>
+          {% if todo.priority %}
+            <span class="pill-badge pill-badge-priority">!</span>
+          {% endif %}
 
-      <h3>Finished items</h3>
-      <ul class="list-group">
-        {% for todo in todos %}
-        {% if todo.completed %}
-          <li class="list-group-item">
-            <del>{{ todo.description }}</del>
-            <a href="{% url 'todo-delete' todo.id %}" class="btn btn-warning btn-sm float-right">Clear</a>
-          </li>
-        {% endif %}
-        {% empty %}
-          <li class="list-group-item">No finished tasks.</li>
-        {% endfor %}
-      </ul>
+        </li>
+      {% endif %}
 
-    </div>
-  </div>
+      {% empty %}
+      <li class="">No tasks available.</li>
+
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'todo-create' %}" class="btn success">Add New Task</a>
+</div>
+
+
+<div>
+  <h3>Finished items</h3>
+
+  <ul class="todo-list">
+    {% for todo in todos %}
+
+      {% if todo.completed %}
+        <li class=todo-item>
+          <a href="{% url 'todo-update' todo.id %}" class="">
+            <span class="todo-description">
+            <s>{{ todo.description }}</s>
+            </span>
+          </a>
+
+        </li>
+      {% endif %}
+
+      {% empty %}
+      <li class="">No finished tasks.</li>
+
+    {% endfor %}
+  </ul>
+
+</div>
 {% endblock %}
