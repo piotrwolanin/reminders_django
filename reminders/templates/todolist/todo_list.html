@@ -33,7 +33,6 @@
   <a href="{% url 'todo-create' %}" class="btn success">Add New Task</a>
 </div>
 
-
 <div>
   <h3>Finished items</h3>
 
@@ -43,9 +42,7 @@
       {% if todo.completed %}
         <li class=todo-item>
           <a href="{% url 'todo-update' todo.id %}" class="">
-            <span class="todo-description">
-            <s>{{ todo.description }}</s>
-            </span>
+            <s class="todo-description">{{ todo.description }}</s>
           </a>
 
         </li>

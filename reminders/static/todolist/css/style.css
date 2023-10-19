@@ -1,14 +1,18 @@
+/* Base style */
+
 :root {
     --color-black: #000;
     --color-white: #fff;
+    --color-gray: #f9f9f9;
 
-    --color-primary-light: #d9d9d9;
-    --color-secondary-light: #f9f9f9;
+    --color-border: #d9d9d9;
 
-    --color-info: #0d6efd;
+    --color-primary: #0d6efd;
+    --color-secondary: #6c757d;
     --color-success: #198754;
-    --color-warning: #ffc107;
     --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #0dcaf0;
 
     --default-font-size: 1.6rem;
 }
@@ -42,6 +46,14 @@ body {
     font-weight: 400;
 }
 
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: auto;
+    padding: 2.3rem;
+}
+
 h1 {
     margin: 2rem;
     text-transform: uppercase;
@@ -51,13 +63,8 @@ h3 {
     margin: 2.3rem;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: auto;
-    padding: 2.3rem;
-}
+
+/* To-do list */
 
 .todo-list {
     list-style: none;
@@ -72,9 +79,9 @@ h3 {
     display: flex;
     align-items: center;
     padding: 1.0rem;
-    border: 0.1rem solid var(--color-primary-light);
+    border: 0.1rem solid var(--color-border);
     border-radius: 0.25rem;
-    background-color: var(--color-secondary-light);
+    background-color: var(--color-gray);
 }
 
 .todo-checkbox {
@@ -103,6 +110,8 @@ h3 {
     background-color: var(--color-warning);
 }
 
+/* Buttons */
+
 .btn {
     display: inline-block;
     font-weight: 500;
@@ -120,10 +129,32 @@ h3 {
     color: var(--color-white);
 }
 
+.primary {
+    background-color: var(--color-primary);
+}
+
 .success {
     background-color: var(--color-success);
 }
 
-.primary {
+.info {
     background-color: var(--color-info);
 }
+
+
+/* Forms */
+
+.form-group {
+    margin-bottom: 1.0rem;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+}
+
+.form-group textarea {
+    padding: 8px;
+    border: 0.1rem solid var(--color-border);
+    border-radius: 0.25rem;
+}
+
