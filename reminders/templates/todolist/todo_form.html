@@ -1,8 +1,8 @@
 {% extends "todolist/blank.html" %}
 
 {% block content %}
-  <div class="">
-    <h1>{% if view.title %}{{ view.title }}{% else %}Add a task{% endif %}</h1>
+  <div>
+    <h1>{% if form_title %}{{ form_title }}{% else %}Add or edit a task{% endif %}</h1>
     <form method="POST">
         {% csrf_token %}
         <div class="form-group">
@@ -14,9 +14,12 @@
             {{ form.priority }} {{ form.priority.label_tag }}
         </div>
 
-        <div class="form-group">
+        <div class="form-buttons">
             <button type="submit" class="btn primary">Save</button>
             <a href="{% url 'todo-list' %}" class="btn info">Back to List</a>
+            {% if todo.id %}
+                <a href="{% url 'todo-delete' todo.id %}" class="btn danger">Delete</a>
+            {% endif %}
         </div>
       </form>
 

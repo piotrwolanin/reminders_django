@@ -3,10 +3,10 @@
 {% block content %}
 <h1>To-Do List</h1>
 
-<div>
+<div class="todo-list">
   <h3>Pending items</h3>
 
-  <ul class="todo-list">
+  <ul class="todo-items">
     {% for todo in todos %}
 
       {% if not todo.completed %}
@@ -18,14 +18,14 @@
             </span>
           </a>
           {% if todo.priority %}
-            <span class="pill-badge pill-badge-priority">!</span>
+            <span class="priority-badge">!</span>
           {% endif %}
 
         </li>
       {% endif %}
 
       {% empty %}
-      <li class="">No tasks available.</li>
+      <li>No tasks available.</li>
 
     {% endfor %}
   </ul>
@@ -33,26 +33,32 @@
   <a href="{% url 'todo-create' %}" class="btn success">Add New Task</a>
 </div>
 
-<div>
-  <h3>Finished items</h3>
+<div class="todo-list">
+  <h3>Completed items</h3>
 
-  <ul class="todo-list">
+  <ul class="todo-items">
     {% for todo in todos %}
 
       {% if todo.completed %}
         <li class=todo-item>
-          <a href="{% url 'todo-update' todo.id %}" class="">
+          <a href="{% url 'todo-update' todo.id %}">
             <s class="todo-description">{{ todo.description }}</s>
           </a>
 
         </li>
       {% endif %}
 
-      {% empty %}
-      <li class="">No finished tasks.</li>
+      {% if forloop.counter == forloop.revcounter and not todo.completed %}
+        <li>No finished tasks.</li>
+      {% endif %}
 
     {% endfor %}
   </ul>
+
+  <form action="{% url 'todo-clear' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn secondary">Clear completed</button>
+  </form>
 
 </div>
 {% endblock %}

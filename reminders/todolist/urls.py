@@ -4,8 +4,9 @@ from . import views
 
 
 urlpatterns = [
-    path("", views.ToDoListView.as_view(), name="todo-list"),
-    path("create/", views.ToDoCreateView.as_view(), name="todo-create"),
-    path("<int:pk>/update/", views.ToDoUpdateView.as_view(), name="todo-update"),
-    path("<int:pk>/delete/", views.ToDoDeleteView.as_view(), name="todo-delete"),
+    path("", views.ListTaskView.as_view(), name="todo-list"),
+    path("create/", views.CreateTaskView.as_view(), name="todo-create"),
+    path("<int:pk>/update/", views.UpdateTaskView.as_view(), name="todo-update"),
+    path("<int:pk>/delete/", views.DeleteTaskView.as_view(), name="todo-delete"),
+    path("clear/", views.ClearCompletedTasksView.as_view(), name="todo-clear"),
 ]
