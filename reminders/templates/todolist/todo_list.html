@@ -1,12 +1,10 @@
 {% extends "todolist/blank.html" %}
 
-{% block content %}
-<h1>To-Do List</h1>
-
-<div class="todo-list">
+{% block body %}
+<div class="content-group">
   <h3>Pending items</h3>
 
-  <ul class="todo-items">
+  <ul class="todo-list">
     {% for todo in pending_items %}
 
       <li class=todo-item>
@@ -34,10 +32,10 @@
   <a href="{% url 'todo-create' %}" class="btn success">Add New Task</a>
 </div>
 
-<div class="todo-list">
+<div class="content-group">
   <h3>Completed items</h3>
 
-  <ul class="todo-items">
+  <ul class="todo-list">
     {% for todo in completed_items %}
 
       <li class=todo-item>
@@ -49,7 +47,6 @@
         <a href="{% url 'todo-update' todo.id %}">
           <s class="todo-description">{{ todo.description }}</s>
         </a>
-
       </li>
 
       {% empty %}
