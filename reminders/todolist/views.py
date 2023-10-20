@@ -4,7 +4,6 @@ from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 
-
 from .models import ToDoItem
 from .forms import ToDoItemModelForm
 
@@ -40,7 +39,6 @@ class UpdateTaskView(UpdateView):
     template_name = "todolist/todo_form.html"
     context_object_name = "todo"
     success_url = reverse_lazy("todo-list")
-    success_message = "Task was successfully updated."
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,18 +51,14 @@ class DeleteTaskView(DeleteView):
     template_name = "todolist/todo_confirm_delete.html"
     context_object_name = "todo"
     success_url = reverse_lazy("todo-list")
-    success_message = "Task was successfully deleted."
 
 
 @require_POST
 def complete_task(request, pk):
     item = get_object_or_404(ToDoItem, pk=pk)
-    item.completed = request.POST.get('completed') == 'true'
-    print("Item completed:", item.completed)
-    print("Request completed:", request.POST.get('completed'))
-    print(request.POST)
+    item.completed = request.POST.get("completed") == "true"
     item.save()
-    return redirect('todo-list')
+    return redirect("todo-list")
 
 
 class ClearCompletedTasksView(View):
