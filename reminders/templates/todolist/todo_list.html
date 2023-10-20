@@ -7,22 +7,23 @@
   <h3>Pending items</h3>
 
   <ul class="todo-items">
-    {% for todo in todos %}
+    {% for todo in pending_items %}
 
-      {% if not todo.completed %}
-        <li class=todo-item>
-          <input class="todo-checkbox" type="checkbox" value="">
-          <a href="{% url 'todo-update' todo.id %}" class="">
-            <span class="todo-description">
-            {{ todo.description }}
-            </span>
-          </a>
-          {% if todo.priority %}
-            <span class="priority-badge">!</span>
-          {% endif %}
+      <li class=todo-item>
+        <form action="{% url 'todo-complete' todo.id %}" method="POST">
+            {% csrf_token %}
+            <input type="checkbox" onchange="this.form.submit();" class="todo-checkbox" name="completed" value="true">
+        </form>
 
-        </li>
-      {% endif %}
+        <a href="{% url 'todo-update' todo.id %}">
+          <span class="todo-description">
+          {{ todo.description }}
+          </span>
+        </a>
+        {% if todo.priority %}
+          <span class="priority-badge">!</span>
+        {% endif %}
+      </li>
 
       {% empty %}
       <li>No tasks available.</li>
@@ -37,27 +38,29 @@
   <h3>Completed items</h3>
 
   <ul class="todo-items">
-    {% for todo in todos %}
+    {% for todo in completed_items %}
 
-      {% if todo.completed %}
-        <li class=todo-item>
-          <a href="{% url 'todo-update' todo.id %}">
-            <s class="todo-description">{{ todo.description }}</s>
-          </a>
+      <li class=todo-item>
+        <form action="{% url 'todo-complete' todo.id %}" method="POST">
+            {% csrf_token %}
+            <input type="checkbox" checked onchange="this.form.submit();" class="todo-checkbox" name="completed" value="false">
+        </form>
 
-        </li>
-      {% endif %}
+        <a href="{% url 'todo-update' todo.id %}">
+          <s class="todo-description">{{ todo.description }}</s>
+        </a>
 
-      {% if forloop.counter == forloop.revcounter and not todo.completed %}
-        <li>No finished tasks.</li>
-      {% endif %}
+      </li>
+
+      {% empty %}
+      <li>No finished tasks.</li>
 
     {% endfor %}
   </ul>
 
   <form action="{% url 'todo-clear' %}" method="POST">
     {% csrf_token %}
-    <button type="submit" class="btn secondary">Clear completed</button>
+    <button type="submit" class="btn secondary" {% if completed_items|length == 0 %}disabled{% endif %}>Clear completed</button>
   </form>
 
 </div>

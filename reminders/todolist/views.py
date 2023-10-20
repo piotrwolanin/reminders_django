@@ -1,6 +1,9 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.views.decorators.http import require_POST
+
 
 from .models import ToDoItem
 from .forms import ToDoItemModelForm
@@ -10,6 +13,12 @@ class ListTaskView(ListView):
     template_name = "todolist/todo_list.html"
     context_object_name = "todos"
     model = ToDoItem
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["pending_items"] = ToDoItem.objects.filter(completed=False)
+        context["completed_items"] = ToDoItem.objects.filter(completed=True)
+        return context
 
 
 class CreateTaskView(CreateView):
@@ -45,6 +54,17 @@ class DeleteTaskView(DeleteView):
     context_object_name = "todo"
     success_url = reverse_lazy("todo-list")
     success_message = "Task was successfully deleted."
+
+
+@require_POST
+def complete_task(request, pk):
+    item = get_object_or_404(ToDoItem, pk=pk)
+    item.completed = request.POST.get('completed') == 'true'
+    print("Item completed:", item.completed)
+    print("Request completed:", request.POST.get('completed'))
+    print(request.POST)
+    item.save()
+    return redirect('todo-list')
 
 
 class ClearCompletedTasksView(View):
