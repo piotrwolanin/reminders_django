@@ -10,7 +10,6 @@ from .forms import ToDoItemModelForm
 
 class ListTaskView(ListView):
     template_name = "todolist/todo_list.html"
-    context_object_name = "todos"
     model = ToDoItem
 
     def get_context_data(self, **kwargs):
