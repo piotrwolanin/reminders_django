@@ -2,13 +2,15 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, V
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_POST
 
 from .models import ToDoItem
 from .forms import ToDoItemModelForm
 
 
-class ListTaskView(ListView):
+class ListTaskView(LoginRequiredMixin, ListView):
     template_name = "todolist/todo_list.html"
     model = ToDoItem
 
@@ -19,7 +21,7 @@ class ListTaskView(ListView):
         return context
 
 
-class CreateTaskView(CreateView):
+class CreateTaskView(LoginRequiredMixin, CreateView):
     model = ToDoItem
     form_class = ToDoItemModelForm
     template_name = "todolist/todo_form.html"
@@ -32,7 +34,7 @@ class CreateTaskView(CreateView):
         return context
 
 
-class UpdateTaskView(UpdateView):
+class UpdateTaskView(LoginRequiredMixin, UpdateView):
     model = ToDoItem
     form_class = ToDoItemModelForm
     template_name = "todolist/todo_form.html"
@@ -45,13 +47,14 @@ class UpdateTaskView(UpdateView):
         return context
 
 
-class DeleteTaskView(DeleteView):
+class DeleteTaskView(LoginRequiredMixin, DeleteView):
     model = ToDoItem
     template_name = "todolist/todo_confirm_delete.html"
     context_object_name = "todo"
     success_url = reverse_lazy("todo-list")
 
 
+@login_required
 @require_POST
 def complete_task(request, pk):
     item = get_object_or_404(ToDoItem, pk=pk)
@@ -60,7 +63,7 @@ def complete_task(request, pk):
     return redirect("todo-list")
 
 
-class ClearCompletedTasksView(View):
+class ClearCompletedTasksView(LoginRequiredMixin, View):
     success_url = reverse_lazy("todo-list")
 
     def post(self, request, *args, **kwargs):

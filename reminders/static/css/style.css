@@ -146,3 +146,10 @@ textarea {
     border: 0.1rem solid var(--color-border);
     border-radius: 0.25rem;
 }
+
+/* Logging in & out */
+
+.account-group {
+    display: flex;
+    justify-content: flex-end;
+}

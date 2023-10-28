@@ -1,6 +1,9 @@
-{% extends "todolist/blank.html" %}
+{% extends "blank.html" %}
+
+{% block title %}To-Do Form{% endblock %}
 
 {% block body %}
+<h1>To-Do Form</h1>
 <div class="content-group">
     <h3>{% if form_title %}{{ form_title }}{% else %}Add or edit a task{% endif %}</h3>
     <form method="POST" class="crud-form">

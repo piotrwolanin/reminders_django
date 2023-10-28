@@ -1,6 +1,15 @@
-{% extends "todolist/blank.html" %}
+{% extends "blank.html" %}
+
+{% block title %}To-Do List{% endblock %}
 
 {% block body %}
+<div class="account-group">
+  <a href="{% url 'password_change' %}" class="btn primary">Change Password</a>
+  <a href="{% url 'logout' %}" class="btn danger">Log out</a>
+</div>
+
+<h1>To-Do List</h1>
+
 <div class="content-group">
   <h3>Pending items</h3>
 

@@ -1,0 +1,14 @@
+{% extends "blank.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+<h1>Login</h1>
+<div class="login-group">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn success" type="submit" value="Login">
+    </form>
+</div>
+{% endblock %}

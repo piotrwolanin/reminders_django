@@ -3,12 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'todolist/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <title>To-Do List</title>
+    <title>{% block title %}To-Do List{% endblock %}</title>
   </head>
   <body>
-    <h1>To-Do List</h1>
     {% block body %}
     {% endblock %}
   </body>
