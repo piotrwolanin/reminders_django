@@ -3,12 +3,14 @@
 {% block title %}To-Do List{% endblock %}
 
 {% block body %}
-<div class="account">
-  <a href="{% url 'password_change' %}" class="btn primary">Change Password</a>
-  <a href="{% url 'logout' %}" class="btn danger">Log out</a>
-</div>
+<div class="todo-nav">
+  <h1>To-Do List</h1>
 
-<h1>To-Do List</h1>
+  <div class="account">
+    <a href="{% url 'password_change' %}" class="btn primary">Change Password</a>
+    <a href="{% url 'logout' %}" class="btn danger">Log out</a>
+  </div>
+</div>
 
 <div class="content-group">
   <h3>Pending items</h3>

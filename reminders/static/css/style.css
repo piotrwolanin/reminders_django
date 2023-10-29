@@ -60,6 +60,12 @@ h1 {
     margin: 2.0rem 1.0rem;
 }
 
+.todo-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .todo-list {
     list-style: none;
     margin: 1.2rem 0;
