@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -26,7 +27,12 @@ class ToDoItemModelTest(TestCase):
 
 class ToDoViewTest(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user(
+            username="testuser", password="testpassword"
+        )
         self.client = Client()
+        self.client.login(username="testuser", password="testpassword")
+
         self.list_url = reverse("todo-list")
         self.create_url = reverse("todo-create")
         self.update_url = reverse("todo-update", args=[1])
@@ -78,12 +84,17 @@ class ToDoViewTest(TestCase):
         Test that the update view changes a ToDoItem correctly and redirects
         """
         updated_desc = "Pay bills"
-        response = self.client.post(self.update_url, {"description": updated_desc, "priority": True, "completed": True})
+        response = self.client.post(
+            self.update_url,
+            {"description": updated_desc, "priority": True, "completed": True},
+        )
         item = ToDoItem.objects.get(pk=1)
         item.refresh_from_db()
         self.assertEqual(item.description, updated_desc)
         self.assertTrue(item.priority)
-        self.assertFalse(item.completed, "This form should not modify the 'completed' attribute")
+        self.assertFalse(
+            item.completed, "This form should not modify the 'completed' attribute"
+        )
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.list_url)
 
@@ -117,9 +128,37 @@ class ToDoViewTest(TestCase):
         """
         all_items = ToDoItem.objects.all()
         init_completed_count = all_items.filter(completed=True).count()
-        self.assertGreater(init_completed_count, 0, "There should be at least 1 completed item for this test to work")
+        self.assertGreater(
+            init_completed_count,
+            0,
+            "There should be at least 1 completed item for this test to work",
+        )
         response = self.client.post(self.clear_url)
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, self.list_url)
         final_completed_count = all_items.filter(completed=True).count()
         self.assertGreater(init_completed_count, final_completed_count)
+
+    def test_all_views_require_logging_in(self):
+        self.client.logout()
+
+        selected_urls = (
+            self.list_url,
+            self.create_url,
+            self.update_url,
+            self.delete_url,
+            self.complete_url,
+            self.clear_url,
+        )
+
+        for url in selected_urls:
+            response = self.client.get(url)
+
+            # Assert that the status code is a re-direct
+            self.assertEqual(response.status_code, 302, f"{url} is not protected!")
+
+            # Assert that the re-direct is to the login page
+            self.assertTrue(
+                response.url.startswith("/accounts/login/"),
+                f"{url} does not redirect to login page!",
+            )
