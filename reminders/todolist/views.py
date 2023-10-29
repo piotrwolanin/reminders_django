@@ -16,9 +16,13 @@ class ListTaskView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["pending_items"] = ToDoItem.objects.filter(completed=False)
-        context["completed_items"] = ToDoItem.objects.filter(completed=True)
+        context["pending_items"] = context["todoitem_list"].filter(completed=False)
+        context["completed_items"] = context["todoitem_list"].filter(completed=True)
         return context
+
+    def get_queryset(self):
+        # Make sure user can only view his/her own tasks
+        return super().get_queryset().filter(user=self.request.user)
 
 
 class CreateTaskView(LoginRequiredMixin, CreateView):
@@ -50,12 +54,18 @@ class UpdateTaskView(LoginRequiredMixin, UpdateView):
         context["form_title"] = "Edit task"
         return context
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
 
 class DeleteTaskView(LoginRequiredMixin, DeleteView):
     model = ToDoItem
     template_name = "todolist/todo_confirm_delete.html"
     context_object_name = "todo"
     success_url = reverse_lazy("todo-list")
+
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
 
 
 @login_required
@@ -71,6 +81,8 @@ class ClearCompletedTasksView(LoginRequiredMixin, View):
     success_url = reverse_lazy("todo-list")
 
     def post(self, request, *args, **kwargs):
-        completed_tasks = ToDoItem.objects.filter(completed=True)
+        completed_tasks = ToDoItem.objects.filter(
+            user=self.request.user, completed=True
+        )
         completed_tasks.delete()
         return HttpResponseRedirect(self.success_url)

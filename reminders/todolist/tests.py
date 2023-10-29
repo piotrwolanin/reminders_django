@@ -11,9 +11,13 @@ class ToDoItemModelTest(TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.desc = "Write unit tests"
+        self.user = None
 
     def setUp(self):
-        ToDoItem.objects.create(description=self.desc, completed=False)
+        self.user = User.objects.create_user(
+            username="testuser", password="testpassword"
+        )
+        ToDoItem.objects.create(description=self.desc, completed=False, user=self.user)
 
     def test_todo_creation(self):
         todo = ToDoItem.objects.get(description=self.desc)
@@ -27,11 +31,16 @@ class ToDoItemModelTest(TestCase):
 
 class ToDoViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", password="testpassword"
+        username1 = "testuser1"
+        pwd1 = "testpassword1"
+
+        self.user1 = User.objects.create_user(username=username1, password=pwd1)
+        self.user2 = User.objects.create_user(
+            username="testuser2", password="testpassword2"
         )
+
         self.client = Client()
-        self.client.login(username="testuser", password="testpassword")
+        self.client.login(username=username1, password=pwd1)
 
         self.list_url = reverse("todo-list")
         self.create_url = reverse("todo-create")
@@ -40,10 +49,12 @@ class ToDoViewTest(TestCase):
         self.complete_url = reverse("todo-complete", args=[3])
         self.clear_url = reverse("todo-clear")
 
-        ToDoItem.objects.create(description="Get groceries")
-        ToDoItem.objects.create(description="Write unit tests", completed=True)
-        ToDoItem.objects.create(description="Clean the flat")
-        ToDoItem.objects.create(description="Learn guitar")
+        ToDoItem.objects.create(description="Buy food", user=self.user1)
+        ToDoItem.objects.create(
+            description="Write unit tests", completed=True, user=self.user1
+        )
+        ToDoItem.objects.create(description="Clean the flat", user=self.user1)
+        ToDoItem.objects.create(description="Learn guitar", user=self.user1)
 
     def test_view_list_todo_items(self):
         """
@@ -138,6 +149,16 @@ class ToDoViewTest(TestCase):
         self.assertRedirects(response, self.list_url)
         final_completed_count = all_items.filter(completed=True).count()
         self.assertGreater(init_completed_count, final_completed_count)
+
+    def test_can_only_modify_own_tasks(self):
+        """It should not be possible to edit or delete tasks owned by other users"""
+        new_task = ToDoItem.objects.create(description="Wash the car", user=self.user2)
+
+        update_response = self.client.post(reverse("todo-update", args=[new_task.pk]))
+        self.assertEqual(update_response.status_code, 404)
+
+        delete_response = self.client.post(reverse("todo-delete", args=[new_task.pk]))
+        self.assertEqual(delete_response.status_code, 404)
 
     def test_all_views_require_logging_in(self):
         self.client.logout()
