@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from django.db import models
 
 
@@ -7,6 +9,7 @@ class ToDoItem(models.Model):
     modified = models.DateTimeField("modified", auto_now=True)
     priority = models.BooleanField("priority", default=False)
     completed = models.BooleanField("completed", default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["created"]

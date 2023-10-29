@@ -33,6 +33,10 @@ class CreateTaskView(LoginRequiredMixin, CreateView):
         context["form_title"] = "Create a new task"
         return context
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 
 class UpdateTaskView(LoginRequiredMixin, UpdateView):
     model = ToDoItem
