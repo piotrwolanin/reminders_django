@@ -8,12 +8,12 @@
     <h3>{% if form_title %}{{ form_title }}{% else %}Add or edit a task{% endif %}</h3>
     <form method="POST" class="crud-form">
         {% csrf_token %}
-        <div class="form-group">
+        <div>
             <p>{{ form.description.label_tag }}</p>
             {{ form.description }}
         </div>
 
-        <div class="form-group">
+        <div>
             {{ form.priority }} {{ form.priority.label_tag }}
         </div>
 

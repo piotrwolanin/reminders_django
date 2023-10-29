@@ -3,12 +3,25 @@
 {% block title %}Log in{% endblock %}
 
 {% block body %}
-<h1>Login</h1>
-<div class="login-group">
+<div class="login-container">
+    <p class="login-message">Log in</p>
+
     <form method="POST">
         {% csrf_token %}
-        {{ form }}
-        <input class="btn success" type="submit" value="Login">
+
+        <div class="login-group">
+            <p>{{ form.username.label_tag }}</p>
+            {{ form.username }}
+        </div>
+
+        <div class="login-group">
+            <p>{{ form.password.label_tag }}</p>
+            {{ form.password }}
+        </div>
+
+        <input class="btn success" type="submit" value="Log in">
     </form>
+
 </div>
+
 {% endblock %}

@@ -3,4 +3,8 @@
 {% block title %}Logged out{% endblock %}
 
 {% block body %}
+<div class="login-container">
+    <p class="login-message">You have been successfully logged out.</p>
+    <a href="{% url 'login' %}"><input class="btn success" type="submit" value="Log in again"></a>
+</div>
 {% endblock %}

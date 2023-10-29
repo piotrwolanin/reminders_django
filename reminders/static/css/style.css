@@ -149,7 +149,27 @@ textarea {
 
 /* Logging in & out */
 
-.account-group {
+.account {
     display: flex;
     justify-content: flex-end;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-message {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.login-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 }
