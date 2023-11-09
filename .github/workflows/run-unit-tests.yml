@@ -27,6 +27,6 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install
-    - name: Test with pytest
+    - name: Run unit tests
       run: |
-        poetry run pytest
+        poetry shell && python reminders/manage.py test
