@@ -29,4 +29,4 @@ jobs:
         poetry install
     - name: Run unit tests
       run: |
-        cd reminders && poetry run python manage.py test
+        poetry run python manage.py test
